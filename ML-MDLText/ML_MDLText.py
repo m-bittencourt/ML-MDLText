@@ -20,7 +20,7 @@ from scipy.sparse import lil_matrix
 import sklearn as skl
 import myFunctions
 
-class MDLText(MLClassifierBase):
+class ML_MDLText(MLClassifierBase):
     """
     MDLText
     

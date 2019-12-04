@@ -45,8 +45,8 @@ def getDefautMethods(learningType, vocabulary=None, method=None, methodsExecuted
                 ['SGD_TP-CC','TFIDF'],
                 ['Perceptron_TP-CC','TFIDF'],
                 ['MLP','TFIDF'],
-				['MDLText_MD/SGD','TFIDF'],
-                ['MDLText_MD_V2/SGD','TFIDF']
+				['ML-MDLText_alpha/SGD','TFIDF'],
+                ['ML-MDLText/SGD','TFIDF']
         ]
         
     return getDefault(methods, method, methodsExecuted)
@@ -67,7 +67,6 @@ def getDefautPathResults(learningType=None, vocabulary=None, performExperimentTy
         directory = (directory+'/')
     else:
         directory = (directory+'/'+performExperimentType+'/')
-  
 
     return directory
 

@@ -15,7 +15,7 @@ import multiprocessing
 from multiprocessing import Process
 import time, timeit
 
-#import skmultiflow as skmf
+import skmultiflow as skmf
 from sklearn import feature_extraction
 from sklearn import linear_model
 from sklearn import neural_network
@@ -44,9 +44,9 @@ import stratified_multilabel_KFold
 import load_dataset
 from load_dataset import import_dataset_multilabel
 
-sys.path.append('MDLText')
-from MDLText_multilabel_MD import MDLText as MDLText_MD
-from MDLText_multilabel_MD_V2 import MDLText as MDLText_MD_V2
+sys.path.append('ML-MDLText')
+from ML_MDLText_alpha import ML_MDLText as ML_MDLText_alpha
+from ML_MDLText import ML_MDLText as ML_MDLText
 
 import configDefault as de
 
@@ -230,7 +230,6 @@ def perform_experiment_online(dataset, target, classes, methodName, datasetName,
 
         startTime.append(time.time())
 
-
         t_out = False # verifica se nao estourou o tempo de execução do fold, de 2 dias
 
         train_index = list(np.random.RandomState(i).permutation(train_index))
@@ -255,7 +254,7 @@ def perform_experiment_online(dataset, target, classes, methodName, datasetName,
         classifier = return_classifier_online(methodName, performGrid, n_splitsGrid, dynamicVocabulary)
         
         # treina o classificador com os dados de treinameto
-        if 'MDLText_M' in methodName:
+        if 'ML-MDLText' in methodName:
             classifier.fit(x_train, y_train, classes_multiclasse=np.unique(target.sum(axis=1))) 
         else:
             classifier.fit(x_train, y_train) 
@@ -423,14 +422,10 @@ def return_classifier_online(method, performGrid, n_splitsGrid, metaclassificado
             # inicia o classificador com os parâmetros default do Scikit
             classifier = skl.linear_model.SGDClassifier(random_state=5)
 
-        elif 'PA' in method: #Passivo-Agressivo
+        elif 'PA' in method: #Passive-Aggressive
             # inicia o classificador com os parâmetros default do Scikit
             classifier = skl.linear_model.PassiveAggressiveClassifier(random_state=5)
         
-        elif 'MDLText' in method: #Passivo-Agressivo
-            # inicia o classificador com os parâmetros default do Scikit
-            classifier = MDLText()
-
         if '1vsAll' in method:
             # inicia o classificador de transformação binária
             #classifier = skml.problem_transform.BinaryRelevance( classifier = classifier )  
@@ -455,15 +450,17 @@ def return_classifier_online(method, performGrid, n_splitsGrid, metaclassificado
         #                  'activation': ['identity', 'logistic', 'tanh', 'relu']}
         #                  'solver' : ['lbfgs', 'sgd', 'adam']} 
 
-    elif 'MDLText' in method: #MDLText
+    elif 'ML-MDLText' in method: #MDLText
 
         metaclass = skl.linear_model.SGDClassifier(random_state=5)
 
-        if '_MD_V2' in method: #MDLText Versão meta-Classificador que considera a dependencia entre as classes
-            classifier  = MDLText_MD_V2(clfClasses = metaclass, calc_feature_relevance=False)
+        
+        if '_alpha' in method: #MDLText Versão meta-Classificador que considera a dependencia entre as classes
+            classifier  = ML_MDLText_alpha(clfClasses = metaclass)
 
-        elif '_MD' in method: #MDLText Versão meta-Classificador que considera a dependencia entre as classes
-            classifier  = MDLText_MD(metaclass = metaclass)
+        else: #MDLText Versão meta-Classificador que considera a dependencia entre as classes
+            classifier  = ML_MDLText(clfClasses = metaclass, calc_feature_relevance=False)
+
 
     return classifier
 

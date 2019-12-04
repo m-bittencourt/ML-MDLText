@@ -16,7 +16,7 @@ import featureRelevance as fs #arquivo com as funções de seleção de features
 
 
 
-class MDLText(BaseEstimator):
+class ML_MDLText(BaseEstimator):
     """
     MDLText
     
