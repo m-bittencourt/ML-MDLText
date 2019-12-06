@@ -9,13 +9,14 @@ def getDefault(listElement, element = None, listElementExecuted = None):
     else:
         return listElement
 
-
+# Tipos de vocabulários
 def getVocabularies(learningType, vocabulary = None):
 
     vocabularies = ['Fixo']
 
     return getDefault(vocabularies, vocabulary)
 
+# Tipos de feedbacks
 def getFeedbacks(learningType, feedback=None):
 
     feedbacks = ['Imediato',
@@ -25,13 +26,14 @@ def getFeedbacks(learningType, feedback=None):
 
     return getDefault(feedbacks, feedback)
 
+# Tipo de execuções
 def getPerformExperimentTypes(learningType, performExperiment=None):
 
-    performExperimentTypes = ['CrossValidation']
+    performExperimentTypes = ['OnlineExecutions']
 
     return getDefault(performExperimentTypes, performExperiment)
 
-    
+# Métodos
 def getDefautMethods(learningType, vocabulary=None, method=None, methodsExecuted=None):
 
     methods = [	['M.NB_1vsAll','binary'],
@@ -51,6 +53,7 @@ def getDefautMethods(learningType, vocabulary=None, method=None, methodsExecuted
         
     return getDefault(methods, method, methodsExecuted)
 
+# Diretório dos resultados
 def getDefautPathResults(learningType=None, vocabulary=None, performExperimentType=None):
     
     if learningType is None:
@@ -70,12 +73,11 @@ def getDefautPathResults(learningType=None, vocabulary=None, performExperimentTy
 
     return directory
 
-def getDefautPathLatexScript():
-    return ('results/')
-
+# Base de Dados
 def getDefautDatasets(dataset=None):
 
-    datasets  = [	['reuters_stopWords_stemming_orgs','txt',0,'rorg', 'english'],
+    datasets  = [	['medical', 'mulan', 45, 'medical', 'english'],
+                    ['reuters_stopWords_stemming_orgs','txt',0,'rorg', 'english'],
 					['reuters_stopWords_stemming_places','txt',0,'rplaces', 'english'],
 					['rcv1_stopWords_stemming_nivel1','txt',0,'rcv1nv1', 'english'],
 					['rcv1_stopWords_stemming_nivel2','txt',0,'rcv1nv2', 'english'],
@@ -95,6 +97,7 @@ def getDefautDatasets(dataset=None):
 
     return getDefault(datasets, dataset)
 
+# Medidas
 def getDefautMeasures():
 
     measures = [

@@ -15,7 +15,7 @@ import multiprocessing
 from multiprocessing import Process
 import time, timeit
 
-import skmultiflow as skmf
+#import skmultiflow as skmf
 from sklearn import feature_extraction
 from sklearn import linear_model
 from sklearn import neural_network
@@ -41,14 +41,14 @@ import myFunctions
 from myFunctions import imprimiResultados_multilabel
 import stratified_multilabel_KFold
 
-import load_dataset
-from load_dataset import import_dataset_multilabel
+import loadDataset
+from loadDataset import import_dataset_multilabel
 
 sys.path.append('ML-MDLText')
 from ML_MDLText_alpha import ML_MDLText as ML_MDLText_alpha
 from ML_MDLText import ML_MDLText as ML_MDLText
 
-import configDefault as de
+import config as de
 
 import heapq
 import queue as Q
@@ -405,10 +405,6 @@ def return_classifier_online(method, performGrid, n_splitsGrid, metaclassificado
             # Inicia o classificador com os parâmetros default do Scikit
             classifier = skl.naive_bayes.BernoulliNB()
 
-        elif 'Naive_Bayes' in method: #bernoulli naive Bayes
-            # Inicia o classificador com os parâmetros default do Scikit
-            classifier = NaiveBayes()#NaiveBayes()
-
         elif 'Perceptron' in method: #perceptron
             # inicia o classificador com os parâmetros default do Scikit
             classifier = skl.linear_model.Perceptron()
@@ -452,14 +448,14 @@ def return_classifier_online(method, performGrid, n_splitsGrid, metaclassificado
 
     elif 'ML-MDLText' in method: #MDLText
 
-        metaclass = skl.linear_model.SGDClassifier(random_state=5)
+        clfClasses = skl.linear_model.SGDClassifier(random_state=5)
 
         
         if '_alpha' in method: #MDLText Versão meta-Classificador que considera a dependencia entre as classes
-            classifier  = ML_MDLText_alpha(clfClasses = metaclass)
+            classifier  = ML_MDLText_alpha(clfClasses = clfClasses)
 
         else: #MDLText Versão meta-Classificador que considera a dependencia entre as classes
-            classifier  = ML_MDLText(clfClasses = metaclass, calc_feature_relevance=False)
+            classifier  = ML_MDLText(clfClasses = clfClasses, calc_feature_relevance=False)
 
 
     return classifier

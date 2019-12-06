@@ -163,9 +163,6 @@ def load_dataset_Mulan(pathDataset, datasetName, labelcount, input_feature_type=
                 for auxTopicos in tagCodes.find_all('label'):
                     topicos.append( auxTopicos.get('name', []) )# extrai o valor que está dentro da tag code
 
-        
-            fileTexto.close()
-
         elif '.arff' in filename:          
 
             matrixFold = None
@@ -178,23 +175,24 @@ def load_dataset_Mulan(pathDataset, datasetName, labelcount, input_feature_type=
                 data = arff_frame['data'][0]
                 row = arff_frame['data'][1]
                 col = arff_frame['data'][2]
-                matrixFold = sparse.coo_matrix((data, (row, col)), shape=(max(row) + 1, max(col) + 1))
+                matrixFold = sparse.csr_matrix((data, (row, col)), shape=(max(row) + 1, max(col) + 1))
+                
 
             if matrix == None:
                 matrix = matrixFold
             else:
-                matrix = sparse.vstack((matrix,matrixFold))
-
+                matrix = sparse.vstack((matrix,matrixFold), format='csr')
         else:
             # unknown file
             None
 
+
     X, y = None, None
 
     if endian == "big":
-        X, y = matrix.tocsc()[:, labelcount:].tolil(), matrix.tocsc()[:, :labelcount].astype(int).tolil()
+        X, y = matrix.tocsr()[:, labelcount:].tolil(), matrix.tocsr()[:, :labelcount].astype(int).tolil()
     elif endian == "little":
-        X, y = matrix.tocsc()[:, :-labelcount], matrix.tocsc()[:, -labelcount:].astype(int)
+        X, y = matrix.tocsr()[:, :-labelcount], matrix.tocsr()[:, -labelcount:].astype(int)
     else:
         # unknown endian
         None
